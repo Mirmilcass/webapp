@@ -84,6 +84,7 @@ public class LoginDispatcher extends HttpServlet {
 			if (rs.next()) {
 				if (rs.getString("pass").equals(pw)) {
 					//					out.println("로그인 성공 <b>" + rs.getString("name") + "</b> 님 환영합니다.<br> <a href=login.html>로그아웃</a>");
+					sc.setAttribute("name", rs.getString("name"));
 					loginSuccess.forward(request, response);
 				} else {
 					//TODO : login pass fail
