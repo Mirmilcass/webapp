@@ -7,13 +7,13 @@
 		해당 프로젝트의 Context 안에 넣는다면 각각 소속됨
 		
 		<!-- mysql 사용시 -->
-		<Resource auth="ConTainer" driverClasName="com.mysql.jdbc.Driver"
+		<Resource auth="ConTainer" driverClassName="com.mysql.jdbc.Driver"
 			maxIdle="30" maxTotal="100" maxWaitMillis="10000" name="JDBC/mysql"
 			type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/test"
 			username="hr" password="hr" />
 
 		<!-- Oracle 사용시 -->
-		<Resource auth="ConTainer" driverClasName="oracle.jdbc.driver.OracleDriver"
+		<Resource auth="ConTainer" driverClassName="oracle.jdbc.driver.OracleDriver"
 			maxIdle="30" maxTotal="100" maxWaitMillis="10000" name="JDBC/Oracle"
 			type="javax.sql.DataSource" url="jdbc:oracle:thin:@localhost:1521:orcl"
 			username="hr" password="hr" />
