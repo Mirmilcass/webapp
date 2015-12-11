@@ -81,7 +81,7 @@
 								if (i == 1) {
 					%>
 					<td>
-						<a href="update_form.jsp?id=<%=rs.getString(i)%>"><%=rs.getString(i)%></a>
+						<a href="deletePro.jsp?id=<%=rs.getString(i)%>"><%=rs.getString(i)%></a>
 					</td>
 					<%
 						} else {
