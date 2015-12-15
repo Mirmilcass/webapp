@@ -16,13 +16,24 @@
 			<td>
 		</tr>
 		<%
-			String name = request.getParameter("name");
-			// 			String name = (String) session.getAttribute("name");
-			if (name != null) {
+			String sessionName = (String) session.getAttribute("name");
+			if (sessionName == null) {
+				String name = request.getParameter("name");
+				if (name != null) {
 		%>
 		<tr>
 			<td align="right">
 				<%=name%>
+				님 어서오세요.
+			</td>
+		</tr>
+		<%
+			}
+			} else {
+		%>
+		<tr>
+			<td align="right">
+				<%=sessionName%>
 				님 어서오세요.
 			</td>
 		</tr>
