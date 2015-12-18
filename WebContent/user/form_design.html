@@ -9,13 +9,27 @@
 <!-- <link href='https://fonts.googleapis.com/css?family=Sansita+One' rel='stylesheet' type='text/css'> -->
 
 
-<script type="text/javascript" src="../js/jquery-2.1.4.js"></script>
-<script type="text/javascript" src="../js/modernizr.min.js"></script>
+<script type="text/javascript" src="js/jquery-2.1.4.js"></script>
+<script type="text/javascript" src="js/modernizr.min.js"></script>
+<script type="text/javascript" src="js/cheak.js"></script>
 </head>
 <body>
 	<div id="reg">
 		<h2 title="회원등록">Registration</h2>
 		<form id="reg_form" action="joinUserPro.jsp" method="post">
+			<!-- ONSUBMIT="return cheak()" -->
+			<p>
+				<label for="u_email"> 이메일 </label>
+				<input id="u_email" name="u_email" type="email" placeholder="이메일"
+					required>
+				<input type="button" VALUE="중복 체크"
+					ONCLICK="openConfirmid(this.form)">
+			</p>
+			<p>
+				<label for="u_password"> 비밀번호 </label>
+				<input id="u_password" name="u_password" type="password"
+					placeholder="비밀번호" required>
+			</p>
 			<p>
 				<label for="u_name"> 이름 </label>
 				<input id="u_name" name="u_name" type="text" placeholder="이름"
@@ -26,24 +40,11 @@
 				<input id="u_phone" name="u_phone" type="tel" placeholder="연락처"
 					required>
 			</p>
-			<!-- 			<FORM ACTION="joinUserPro.jsp" METHOD="post"> -->
-			<p>
-				<label for="u_email"> 이메일 </label>
-				<input id="u_email" name="u_email" type="email" placeholder="이메일"
-					required>
-				<input TYPE="submit" VALUE="E-Mail 중복 체크" FORMTARGET="u_email"
-					FORMACTION="cheaked.jsp" FORMMETHOD="post">
-			</p>
-			<!-- 			</FORM> -->
 			<p>
 				<label for="u_site"> 웹 사이트 </label>
 				<input id="u_site" name="u_site" type="url" placeholder="웹 사이트">
 			</p>
-			<p>
-				<label for="u_password"> 비밀번호 </label>
-				<input id="u_password" name="u_password" type="password"
-					placeholder="비밀번호" required>
-			</p>
+
 			<p id="accept">
 				<input id="accept_terms" name="accept_terms" type="checkbox">
 				<label for="accept_terms"> <strong> <a href="#"
@@ -52,9 +53,17 @@
 				</strong> 합니다.
 				</label>
 			</p>
+			<p>
+				<input TYPE="hidden" VALUE="0" NAME="cheak">
+			</p>
 			<!-- 			<p id="add_count"> -->
 			<!-- 				<button id="reg_new" type="submit" title="회원가입">+</button> -->
 			<!-- 			</p> -->
+			<p>
+				<button TYPE="button" VALUE="회원가입" ONCLICK="cheakEmail(this.form)">회원
+					가입</button>
+				<button TYPE="reset">Reset</button>
+			</p>
 		</form>
 	</div>
 	<!-- reg END -->

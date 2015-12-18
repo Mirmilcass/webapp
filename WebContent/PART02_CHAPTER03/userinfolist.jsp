@@ -18,6 +18,7 @@
 		}
 		return conn;
 	}%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>UserInfo List</title>
@@ -55,18 +56,19 @@
 					int columcnt = rsmd.getColumnCount();
 
 					CheckboxGroup ch = new CheckboxGroup();
+
+					String colName[] = new String[columcnt];
+					for (int i = 1; i <= columcnt; i++) {
+						colName[i - 1] = rsmd.getColumnName(i);
+					}
+
+					request.setAttribute("colName", colName);
 				%>
 				<tr>
 					<td>select</td>
-					<%
-						for (int i = 1; i <= columcnt; i++) {
-					%>
-					<td>
-						<%=rsmd.getColumnName(i)%>
-					</td>
-					<%
-						}
-					%>
+					<c:forEach var="colname" items="${colName }">
+						<td>${colname }</td>
+					</c:forEach>
 				</tr>
 				<%
 					while (rs.next()) {
