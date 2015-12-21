@@ -1,8 +1,6 @@
-<%@page import="java.awt.CheckboxGroup"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*, javax.naming.*,javax.sql.*"%>
-<%@ page import="java.net.URLDecoder"%>
+	pageEncoding="UTF-8"
+	import="java.sql.*, javax.naming.*,javax.sql.*,java.net.URLDecoder,java.awt.CheckboxGroup"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <%!public Connection getConnection() {
@@ -61,14 +59,21 @@
 					for (int i = 1; i <= columcnt; i++) {
 						colName[i - 1] = rsmd.getColumnName(i);
 					}
-
 					request.setAttribute("colName", colName);
 				%>
 				<tr>
+					<!-- for문 사용 -->
 					<td>select</td>
 					<c:forEach var="colname" items="${colName }">
 						<td>${colname }</td>
 					</c:forEach>
+				</tr>
+				<tr>
+					<!-- for 토큰 -->
+					<c:forTokens items="SELECT,ID,PASS,NAME,REGIST" delims=","
+						var="colname">
+						<td>${colname}</td>
+					</c:forTokens>
 				</tr>
 				<%
 					while (rs.next()) {
