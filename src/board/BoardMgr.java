@@ -77,7 +77,7 @@ public class BoardMgr {
 		// sql = "select * from board_list order by gno desc, ono asc limit " + start + ", " + end;
 
 		// oracle 적용
-		/*sql = "select * from (select a.*, rownum rseq from (select * from " + tableName
+		/* sql = "select * from (select a.*, rownum rseq from (select * from " + tableName
 				+ " order by gon desc, ono asc)a) where rseq > " + start + " and rownum <= " + end;*/
 		sql = "select * from (select a.*, rownum rseq from (select * from " + tableName
 				+ " order by gno desc, ono asc)a) where rseq > ? and rownum <= ?";
@@ -177,7 +177,7 @@ public class BoardMgr {
 		return insert_confirm;
 	}
 
-	public BoardData selectedBoardData(String tableName, int no, boolean i) throws SQLException {
+	public BoardData selectedBoardData(String tableName, int no, boolean inc) throws SQLException {
 
 		sql = "select * from " + tableName + " where board_num=?";
 
@@ -192,7 +192,9 @@ public class BoardMgr {
 
 			if (rs.next()) {
 				bd = new BoardData();
+				bd.setGroup(rs.getInt("gno"));
 				bd.setId(rs.getString("id"));
+				bd.setName(rs.getString("name"));
 				bd.setWdate(rs.getString("wdate"));
 				bd.setReadno(rs.getInt("readno"));
 				bd.setTitle(rs.getString("title"));
@@ -202,10 +204,115 @@ public class BoardMgr {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
+			if (rs != null)
+				rs.close();
 			if (pstmt != null)
 				pstmt.close();
 		}
 
+		if (inc && information) {
+			sql = "UPDATE " + tableName + " set readno =? where board_num=?";
+
+			try {
+				pstmt = db.getConnection().prepareStatement(sql);
+				pstmt.setInt(1, (bd.getReadno() + 1));
+				pstmt.setInt(2, no);
+
+				confirm = pstmt.executeUpdate();
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				if (pstmt != null)
+					pstmt.close();
+			}
+
+			bd.setReadno(bd.getReadno() + 1); // 조회수를 최신 상태로 보여준다.
+			information = false; // 조회 off.
+		}
+
 		return bd;
+	}
+
+	public boolean updateBoardData(String tableName, BoardData bd) throws SQLException {
+
+		sql = "UPDATE  " + tableName + " set title=?,content=?,wdate=? where board_num=?";
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = db.getConnection().prepareStatement(sql);
+			pstmt.setInt(4, bd.getNum());
+			pstmt.setString(1, bd.getTitle());
+			pstmt.setString(2, bd.getContent());
+			pstmt.setString(3, bd.getWdate());
+
+			confirm = pstmt.executeUpdate();
+			insert_confirm = confirm == 1 ? true : false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (pstmt != null)
+				pstmt.close();
+		}
+
+		return insert_confirm;
+	}
+
+	public boolean reinsertBoardData(String tableName, BoardData bd) throws SQLException {
+
+		int maxono = 0, maxnested = 0;
+		sql = "select max(ono), max(nested) from " + tableName + " where gno = ?";
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = db.getConnection().prepareStatement(sql);
+			pstmt.setInt(1, bd.getGroup());
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				maxono = rs.getInt(1);
+				maxnested = rs.getInt(2);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (pstmt != null)
+				pstmt.close();
+		}
+
+		sql = "insert into " + tableName + " values(board_num.nextval,?,?,?,?,?,?,?,?,?,?,?)";
+
+		try {
+			pstmt = db.getConnection().prepareStatement(sql);
+			pstmt.setInt(1, bd.getGroup());
+			pstmt.setInt(2, (maxono + 1));
+			pstmt.setInt(3, (maxnested + 1));
+			pstmt.setString(4, bd.getId());
+			pstmt.setString(5, bd.getName());
+			pstmt.setString(6, bd.getTitle());
+			pstmt.setString(7, bd.getContent());
+			pstmt.setString(8, bd.getWdate());
+			pstmt.setInt(9, 0);
+			pstmt.setInt(10, 0);
+			pstmt.setInt(11, 0);
+
+			confirm = pstmt.executeUpdate();
+			insert_confirm = confirm == 1 ? true : false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (pstmt != null)
+				pstmt.close();
+		}
+
+		return insert_confirm;
 	}
 }

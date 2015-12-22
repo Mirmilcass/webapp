@@ -5,6 +5,7 @@
 	String reqPage;
 	BoardMgr mgr;
 	int count = 1;%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -45,22 +46,26 @@
 					data = mgr.selectedBoardDataList("Board_list", reqPageNo);
 					for (int i = 0; i < data.length; i++) {
 			%>
-			<tr ALIGN="center">
-				<td>
+			<tr>
+				<td ALIGN="center">
 					<%=(data[i].getNested() == 0) ? data[i].getGroup() : ""%>
 				</td>
-				<td>
+				<td ALIGN="center">
 					<%=data[i].getId()%>
 				</td>
-				<td>
+				<td ALIGN="center">
 					<%=data[i].getWdate()%></td>
 				<td>
 					<%
 						if (data[i].getNested() > 0) {
 					%>
-					<img src="img/a.gif" WIDTH="<%=data[i].getNested() * 10%>"
+					<%-- <img src="img/a.gif" WIDTH="<%=data[i].getNested() * 10%>"
 						ALT="리플 표시">
-					<!-- 					<img src="img/b.gif"> -->
+					<img src="img/b.gif"> --%>
+					<c:forEach var="re" begin="1" end="<%=data[i].getNested()%>">
+					&nbsp;
+					</c:forEach>
+					RE :
 					<%
 						}
 					%>

@@ -1,4 +1,5 @@
 package board;
+
 /*
 create table board_list(
 	board_num number(10) not null, 
@@ -24,7 +25,7 @@ public class BoardData {
 
 	private int num, group, order, nested, readno, pseq, reply;
 	private String id, name, title, content, wdate;
-	
+
 	public int getNum() {
 		return num;
 	}
@@ -119,9 +120,5 @@ public class BoardData {
 
 	public void setWdate(String wdate) {
 		this.wdate = wdate;
-	}
-
-	public BoardData() {
-		// TODO Auto-generated constructor stub
 	}
 }

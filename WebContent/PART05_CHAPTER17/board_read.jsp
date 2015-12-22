@@ -23,7 +23,7 @@
 		<table WIDTH="800" BORDER="3" BORDERCOLOR="#000">
 			<tr>
 				<td WIDTH="15%" ALIGN="center">작성자</td>
-				<td><%=bd.getId()%></td>
+				<td><%=bd.getName()%></td>
 			</tr>
 			<tr>
 				<td ALIGN="center">날 짜</td>
@@ -45,13 +45,13 @@
 				<td COLSPAN="2" ALIGN="center">
 					<a href="board_list.jsp?page<%=reqPage%>"> [ 목록보기 ]</a>
 					&nbsp;
-					<a href="board_write_re_from.jsp?page<%=reqPage%>%no=<%=no%>">
+					<a href="board_write_re_from.jsp?page<%=reqPage%>&no=<%=no%>">
 						[ 답변쓰기 ]</a>
 					&nbsp;
-					<a href="board_update_from.jsp?page<%=reqPage%>%no=<%=no%>"> [
+					<a href="board_update_from.jsp?page<%=reqPage%>&no=<%=no%>"> [
 						수정하기 ]</a>
 					&nbsp;
-					<a href="board_delete.jsp?page<%=reqPage%>%no=<%=no%>"> [ 삭제하기
+					<a href="board_delete.jsp?page<%=reqPage%>&no=<%=no%>"> [ 삭제하기
 						]</a>
 					&nbsp;
 				</td>
