@@ -30,10 +30,14 @@
 				String id = request.getParameter("id");
 				String content = request.getParameter("content");
 				int gno = Integer.parseInt(request.getParameter("gno"));
+				int ono = Integer.parseInt(request.getParameter("ono"));
+				int nested = Integer.parseInt(request.getParameter("nested"));
 				int no = Integer.parseInt(request.getParameter("no"));
 
 				bd.setNum(no);
 				bd.setGroup(gno);
+				bd.setOrder(ono);
+				bd.setNested(nested);
 				bd.setTitle(title);
 				bd.setName(name);
 				bd.setId(id);

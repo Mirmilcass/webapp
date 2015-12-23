@@ -65,7 +65,7 @@
 					<c:forEach var="re" begin="1" end="<%=data[i].getNested()%>">
 					&nbsp;
 					</c:forEach>
-					RE :
+					RE :&nbsp;
 					<%
 						}
 					%>

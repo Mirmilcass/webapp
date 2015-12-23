@@ -54,6 +54,8 @@
 					<td>
 						<textarea ROWS="10" COLS="50" NAME="content"><%=content%></textarea>
 						<input TYPE="hidden" NAME="gno" VALUE="<%=bd.getGroup()%>">
+						<input TYPE="hidden" NAME="ono" VALUE="<%=bd.getOrder()%>">
+						<input TYPE="hidden" NAME="nested" VALUE="<%=bd.getNested()%>">
 						<input TYPE="hidden" NAME="no" VALUE="<%=no%>">
 					</td>
 				</tr>

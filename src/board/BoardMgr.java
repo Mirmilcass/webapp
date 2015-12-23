@@ -192,6 +192,8 @@ public class BoardMgr {
 
 			if (rs.next()) {
 				bd = new BoardData();
+				bd.setNested(rs.getInt("nested"));
+				bd.setOrder(rs.getInt("ono"));
 				bd.setGroup(rs.getInt("gno"));
 				bd.setId(rs.getString("id"));
 				bd.setName(rs.getString("name"));
@@ -263,25 +265,21 @@ public class BoardMgr {
 
 	public boolean reinsertBoardData(String tableName, BoardData bd) throws SQLException {
 
-		int maxono = 0, maxnested = 0;
-		sql = "select max(ono), max(nested) from " + tableName + " where gno = ?";
-
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+
+		sql = "update " + tableName + " set ono = ono + 1 where gno = ? and ono > ?";
+
 		try {
 			pstmt = db.getConnection().prepareStatement(sql);
 			pstmt.setInt(1, bd.getGroup());
-			rs = pstmt.executeQuery();
-
-			if (rs.next()) {
-				maxono = rs.getInt(1);
-				maxnested = rs.getInt(2);
-			}
+			pstmt.setInt(2, bd.getOrder());
+			confirm = pstmt.executeUpdate();
+			insert_confirm = confirm == 1 ? true : false;
+			System.out.println("update : " + insert_confirm);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if (rs != null)
-				rs.close();
 			if (pstmt != null)
 				pstmt.close();
 		}
@@ -291,8 +289,8 @@ public class BoardMgr {
 		try {
 			pstmt = db.getConnection().prepareStatement(sql);
 			pstmt.setInt(1, bd.getGroup());
-			pstmt.setInt(2, (maxono + 1));
-			pstmt.setInt(3, (maxnested + 1));
+			pstmt.setInt(2, (bd.getOrder() + 1));
+			pstmt.setInt(3, (bd.getNested() + 1));
 			pstmt.setString(4, bd.getId());
 			pstmt.setString(5, bd.getName());
 			pstmt.setString(6, bd.getTitle());
@@ -304,6 +302,7 @@ public class BoardMgr {
 
 			confirm = pstmt.executeUpdate();
 			insert_confirm = confirm == 1 ? true : false;
+			System.out.println("insert : " + insert_confirm);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -315,4 +314,6 @@ public class BoardMgr {
 
 		return insert_confirm;
 	}
+	
+	
 }
