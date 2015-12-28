@@ -28,7 +28,7 @@ public class BoardMgr {
 		rowCount = 0;
 		PageCount = 0;
 
-		//		sql = "select count(*) from ?"; // 테이블 명은 값이 아니기에 변수를 쓸 수 있지만 ?는 안된다.
+		// sql = "select count(*) from ?"; // 테이블 명은 값이 아니기에 변수를 쓸 수 있지만 ?는 안된다.
 		sql = "select count(*) from " + tableName;
 
 		PreparedStatement pstmt = null;
@@ -36,7 +36,7 @@ public class BoardMgr {
 
 		try {
 			pstmt = db.getConnection().prepareStatement(sql);
-			//			pstmt.setString(1, tableName);
+			// pstmt.setString(1, tableName);
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
@@ -60,7 +60,8 @@ public class BoardMgr {
 		return PageCount;
 	}
 
-	public BoardData[] selectedBoardDataList(String tableName, int reqPageNo) throws Exception {
+	public BoardData[] selectedBoardDataList(String tableName, int reqPageNo)
+			throws Exception {
 
 		// list 페이지로 왔을때만 infomation을 true
 		information = true; // 조회 on
@@ -70,28 +71,33 @@ public class BoardMgr {
 		int start = 15 * (reqPageNo - 1);
 		// 시작 게시물 ex : 0, 15, 30, 45, ...
 		// oracle 사용시 ex : 15, 30, 45, ...
-		//		int end = 15; // mysql
+		// int end = 15; // mysql
 		int end = reqPageNo * 15; // 오라클
 
 		// mysql
-		// sql = "select * from board_list order by gno desc, ono asc limit " + start + ", " + end;
+		// sql = "select * from board_list order by gno desc, ono asc limit " +
+		// start + ", " + end;
 
 		// oracle 적용
-		/* sql = "select * from (select a.*, rownum rseq from (select * from " + tableName
-				+ " order by gon desc, ono asc)a) where rseq > " + start + " and rownum <= " + end;*/
-		sql = "select * from (select a.*, rownum rseq from (select * from " + tableName
+		/*
+		 * sql = "select * from (select a.*, rownum rseq from (select * from " +
+		 * tableName + " order by gon desc, ono asc)a) where rseq > " + start +
+		 * " and rownum <= " + end;
+		 */
+		sql = "select * from (select a.*, rownum rseq from (select * from "
+				+ tableName
 				+ " order by gno desc, ono asc)a) where rseq > ? and rownum <= ?";
 
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		//		ResultSetMetaData rsmd = null;
+		// ResultSetMetaData rsmd = null;
 
 		try {
 			pstmt = db.getConnection().prepareStatement(sql);
 			pstmt.setInt(1, start);
 			pstmt.setInt(2, end);
 			rs = pstmt.executeQuery();
-			//			rsmd = rs.getMetaData();
+			// rsmd = rs.getMetaData();
 
 			while (rs.next()) {
 				data = new BoardData();
@@ -105,8 +111,8 @@ public class BoardMgr {
 				data.setContent(rs.getString("content"));
 				data.setWdate(rs.getString("wdate"));
 				data.setReadno(rs.getInt("readno"));
-				//				data.setPseq(rs.getInt("pseq"));
-				//				data.setReply(rs.getInt("reply"));
+				// data.setPseq(rs.getInt("pseq"));
+				// data.setReply(rs.getInt("reply"));
 				arr.add(data);
 			}
 		} catch (SQLException e) {
@@ -125,7 +131,8 @@ public class BoardMgr {
 		return bdList;
 	}
 
-	public boolean insertBoardData(String tableName, BoardData bd) throws SQLException {
+	public boolean insertBoardData(String tableName, BoardData bd)
+			throws SQLException {
 
 		int maxgno = 0;
 		sql = "select max(gno) from " + tableName;
@@ -148,8 +155,9 @@ public class BoardMgr {
 				pstmt.close();
 		}
 
-		//		sql = "insert into ? values(?,?,?,?,?,?,?,?,?,?,?)"; // mysql
-		sql = "insert into " + tableName + " values(board_num.nextval,?,?,?,?,?,?,?,?,?,?,?)";
+		// sql = "insert into ? values(?,?,?,?,?,?,?,?,?,?,?)"; // mysql
+		sql = "insert into " + tableName
+				+ " values(board_num.nextval,?,?,?,?,?,?,?,?,?,?,?)";
 
 		try {
 			pstmt = db.getConnection().prepareStatement(sql);
@@ -177,7 +185,8 @@ public class BoardMgr {
 		return insert_confirm;
 	}
 
-	public BoardData selectedBoardData(String tableName, int no, boolean inc) throws SQLException {
+	public BoardData selectedBoardData(String tableName, int no, boolean inc)
+			throws SQLException {
 
 		sql = "select * from " + tableName + " where board_num=?";
 
@@ -236,9 +245,11 @@ public class BoardMgr {
 		return bd;
 	}
 
-	public boolean updateBoardData(String tableName, BoardData bd) throws SQLException {
+	public boolean updateBoardData(String tableName, BoardData bd)
+			throws SQLException {
 
-		sql = "UPDATE  " + tableName + " set title=?,content=?,wdate=? where board_num=?";
+		sql = "UPDATE  " + tableName
+				+ " set title=?,content=?,wdate=? where board_num=?";
 
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -263,12 +274,13 @@ public class BoardMgr {
 		return insert_confirm;
 	}
 
-	public boolean reinsertBoardData(String tableName, BoardData bd) throws SQLException {
+	public boolean reinsertBoardData(String tableName, BoardData bd)
+			throws SQLException {
 
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		sql = "update " + tableName + " set ono = ono + 1 where gno = ? and ono > ?";
+		sql = "update " + tableName + " set ono=ono+1 where gno=? and ono>?";
 
 		try {
 			pstmt = db.getConnection().prepareStatement(sql);
@@ -284,7 +296,8 @@ public class BoardMgr {
 				pstmt.close();
 		}
 
-		sql = "insert into " + tableName + " values(board_num.nextval,?,?,?,?,?,?,?,?,?,?,?)";
+		sql = "insert into " + tableName
+				+ " values(board_num.nextval,?,?,?,?,?,?,?,?,?,?,?)";
 
 		try {
 			pstmt = db.getConnection().prepareStatement(sql);
@@ -314,6 +327,26 @@ public class BoardMgr {
 
 		return insert_confirm;
 	}
-	
-	
+
+	public boolean deleteBoardData(String tableName, int no)
+			throws SQLException {
+		sql = "delete from " + tableName + " where board_num=" + no;
+
+		PreparedStatement pstmt = null;
+
+		try {
+
+			pstmt = db.getConnection().prepareStatement(sql);
+			confirm = pstmt.executeUpdate(sql);
+			insert_confirm = confirm == 1 ? true : false;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (pstmt != null)
+				pstmt.close();
+		}
+
+		return insert_confirm;
+	}
+
 }
