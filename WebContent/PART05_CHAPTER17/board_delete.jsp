@@ -21,8 +21,9 @@
 			<b> 삭제했습니다. </b>
 		<table width="650" border="3" bordercolor="#000000">
 			<tr>
-				<td colspan="2"><a href=board_list.jsp?page= <%=reqPage%>>
-						[ 목록보기 ] </a></td>
+				<td colspan="2">
+					<a href=board_list.jsp?page= <%=reqPage%>> [ 목록보기 ] </a>
+				</td>
 			</tr>
 		</table>
 	</center>

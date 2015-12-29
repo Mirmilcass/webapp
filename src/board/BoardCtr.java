@@ -26,13 +26,12 @@ public class BoardCtr extends HttpServlet {
 		super();
 	}
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+			IOException {
 		// user request page
 		String requestpage = request.getParameter("reqview");
 
@@ -42,14 +41,11 @@ public class BoardCtr extends HttpServlet {
 
 		// user request handle
 		if (requestpage.equals("index")) {
-			ctx.getRequestDispatcher(VIEWPATH + "index.jsp").forward(request,
-					response);
+			ctx.getRequestDispatcher(VIEWPATH + "index.jsp").forward(request, response);
 		} else if (requestpage.equals("list")) {
-			ArrayList<UserBean> users = (ArrayList<UserBean>) service
-					.userList();
+			ArrayList<UserBean> users = (ArrayList<UserBean>) service.userList();
 			request.setAttribute("users", users);
-			ctx.getRequestDispatcher(VIEWPATH + "board_list.jsp").forward(
-					request, response);
+			ctx.getRequestDispatcher(VIEWPATH + "board_list.jsp").forward(request, response);
 		} else if (requestpage.equals("insert")) {
 			String id = request.getParameter("id");
 			String pass = request.getParameter("pass");
@@ -57,25 +53,18 @@ public class BoardCtr extends HttpServlet {
 			String regist = request.getParameter("regist");
 			int result = service.userInsert(id, pass, name, regist);
 			if (result > 0) {
-				ctx.getRequestDispatcher(ERRORPATH + "success.jsp").forward(
-						request, response);
+				ctx.getRequestDispatcher(VIEWPATH + "success.jsp").forward(request, response);
 			} else {
-				ctx.getRequestDispatcher(ERRORPATH + "fail.jsp").forward(
-						request, response);
+				ctx.getRequestDispatcher(ERRORPATH + "fail.jsp").forward(request, response);
 			}
 		} else if (requestpage.equals("read")) {
-			request.setAttribute("user",
-					service.findById(request.getParameter("id")));
-			ctx.getRequestDispatcher(VIEWPATH + "board_read.jsp").forward(
-					request, response);
+			request.setAttribute("user", service.findById(request.getParameter("id")));
+			ctx.getRequestDispatcher(VIEWPATH + "board_read.jsp").forward(request, response);
 		} else if (requestpage.equals("insertform")) {
-			ctx.getRequestDispatcher(VIEWPATH + "board_write_form.jsp")
-					.forward(request, response);
+			ctx.getRequestDispatcher(VIEWPATH + "board_write_form.jsp").forward(request, response);
 		} else if (requestpage.equals("update_form")) {
-			request.setAttribute("user",
-					service.findById(request.getParameter("id")));
-			ctx.getRequestDispatcher(VIEWPATH + "board_update_from.jsp")
-					.forward(request, response);
+			request.setAttribute("user", service.findById(request.getParameter("id")));
+			ctx.getRequestDispatcher(VIEWPATH + "board_update_from.jsp").forward(request, response);
 		} else if (requestpage.equals("update")) {
 			String id = request.getParameter("id");
 			String pass = request.getParameter("pass");
@@ -83,21 +72,17 @@ public class BoardCtr extends HttpServlet {
 			String regist = request.getParameter("regist");
 			int result = service.userUpdate(id, pass, name, regist);
 			if (result > 0) {
-				ctx.getRequestDispatcher(ERRORPATH + "success.jsp").forward(
-						request, response);
+				ctx.getRequestDispatcher(VIEWPATH + "success.jsp").forward(request, response);
 			} else {
-				ctx.getRequestDispatcher(ERRORPATH + "fail.jsp").forward(
-						request, response);
+				ctx.getRequestDispatcher(ERRORPATH + "fail.jsp").forward(request, response);
 			}
 		} else if (requestpage.equals("remove")) {
 			String id = request.getParameter("id");
 			int result = service.userDelete(id);
 			if (result > 0) {
-				ctx.getRequestDispatcher(ERRORPATH + "success.jsp").forward(
-						request, response);
+				ctx.getRequestDispatcher(VIEWPATH + "success.jsp").forward(request, response);
 			} else {
-				ctx.getRequestDispatcher(ERRORPATH + "fail.jsp").forward(
-						request, response);
+				ctx.getRequestDispatcher(ERRORPATH + "fail.jsp").forward(request, response);
 			}
 		}
 	}
